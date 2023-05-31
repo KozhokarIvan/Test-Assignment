@@ -5,6 +5,46 @@
 > **Примечание:** ✔️ Желательно выложить код на гитхаб или в любую доступную систему контроля
 > версий.
 
+# Инструкция
+
+## docker-compose.yml
+```yml
+version: '3.4'
+
+services:
+  postgredb:
+    container_name: postgredb
+    image: postgres
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_PASSWORD: Password1
+      POSTGRES_DB: usersdb
+      POSTGRES_USER: postgres
+  webapi:
+    container_name: webapi
+    image: csharpenjoyer/testassignment2023may
+    ports:
+      - "8080:443"
+      - "8081:80"
+    build:
+      context: .
+      dockerfile: WebAPI/Dockerfile
+    environment: 
+      PG_CONNECTION_STRING: Host=postgredb;Port=5432;Database=usersdb;Username=postgres;Password=Password1
+    depends_on:
+      - postgredb
+```
+
+## Запуск
+```shell
+docker-compose up
+```
+
+## Доступ к swagger по адресу 
+
+`http://localhost:8081/swagger/`
+
 # Настройка
 > **Примечание:** Используется база данных PostgreSQL 15  
 
